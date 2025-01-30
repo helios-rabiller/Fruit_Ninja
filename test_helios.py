@@ -19,7 +19,7 @@ FRUIT_IMAGES = [
     pygame.image.load("heart.png")
 ]
 for i, img in enumerate(FRUIT_IMAGES):
-    FRUIT_IMAGES[i] = pygame.transform.scale(img, (50, 50))  # Resize fruits
+    FRUIT_IMAGES[i] = pygame.transform.scale(img, (90, 90))  # Resize fruits
 
 # Fruit class
 class Fruit:
@@ -28,7 +28,6 @@ class Fruit:
         self.body.position = (x, y)
         self.body.velocity = (random.randint(-200, 200), -800)  # Consistent upward velocity
         self.shape = pymunk.Circle(self.body, 25)
-        self.shape.elasticity = 0.5  # Bounciness
         self.image = image
         self.letter = random.choice("ZQSD")  # Assign a random letter
         SPACE.add(self.body, self.shape)
@@ -63,14 +62,14 @@ while run:
                         print(f"Score: {score}")
 
     # Spawn fruits randomly
-    if random.randint(0, 100) < 5:  # 5% chance to spawn a fruit each frame
+    if random.randint(0, 100) < 2 :  # 2% chance to spawn a fruit each frame
         x = random.randint(100, WIDTH - 100)
         y = HEIGHT
         fruit_image = random.choice(FRUIT_IMAGES)
         fruits.append(Fruit(x, y, fruit_image))
 
     # Physics Step
-    SPACE.step(1/600)
+    SPACE.step(1/100)
 
     # Draw Everything
     WINDOW.fill((0, 0, 0))
