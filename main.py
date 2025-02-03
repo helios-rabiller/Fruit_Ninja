@@ -407,7 +407,7 @@ while game_running:
 
                     else:
                         combo_count += 1
-                        score += combo_count if difficulty == "hard" else 1
+                        score += combo_count
 
                     # Mark the fruit as cut
                     fruit.is_cut = True
