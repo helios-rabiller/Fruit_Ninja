@@ -26,3 +26,4 @@ jordan: 1
 didnotwork: 28
 Grand score: 11146
 help: 4
+oups: 91
