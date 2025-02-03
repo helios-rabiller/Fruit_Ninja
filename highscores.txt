@@ -1,0 +1,28 @@
+Helios: 10
+Felipe: 12
+jack: 2
+game: 10
+jodric: 1
+ok: 120
+HIGH: 703
+ll: 153
+lll: 28
+kokzd: 210
+Best score: 1540
+asasa: 0
+lpo: 0
+okol: 3
+torle: 5
+debugged: 0
+jordan: 10
+kol: 136
+kolm: 45
+okll: 126
+ozkmoqkzd: 15
+jhlij: 7
+fesf: 0
+lkuh: 55
+jordan: 1
+didnotwork: 28
+Grand score: 11146
+help: 4

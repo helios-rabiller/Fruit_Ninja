@@ -19,18 +19,29 @@ FRUIT_IMAGES = [
     pygame.image.load("heart.png")
 ]
 for i, img in enumerate(FRUIT_IMAGES):
-    FRUIT_IMAGES[i] = pygame.transform.scale(img, (50, 50))  # Resize fruits
+    FRUIT_IMAGES[i] = pygame.transform.scale(img, (100, 0))  # Resize fruits
+
+# Add boundaries (left and right walls)
+def add_boundaries():
+    # Left wall
+    left_wall = pymunk.Segment(SPACE.static_body, (0, 0), (0, HEIGHT), 5)
+    left_wall.elasticity = 0.8  # Bounciness
+    # Right wall
+    right_wall = pymunk.Segment(SPACE.static_body, (WIDTH, 0), (WIDTH, HEIGHT), 5)
+    right_wall.elasticity = 0.8  # Bounciness
+    SPACE.add(left_wall, right_wall)
 
 # Fruit class
 class Fruit:
     def __init__(self, x, y, image):
         self.body = pymunk.Body(1, pymunk.moment_for_circle(1, 0, 25))
         self.body.position = (x, y)
-        self.body.velocity = (random.randint(-200, 200), -800)  # Consistent upward velocity
+        self.body.velocity = (random.randint(-200, 200), -700)  # Initial upward velocity
         self.shape = pymunk.Circle(self.body, 25)
-        self.shape.elasticity = 0.5  # Bounciness
+        self.shape.elasticity = 0.8  # Bounciness of fruits
+        self.shape.friction = 0.5  # Friction to slow down fruits
         self.image = image
-        self.letter = random.choice("ZQSD")  # Assign a random letter
+        self.letter = random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")  # Assign a random letter
         SPACE.add(self.body, self.shape)
 
     def draw(self, window):
@@ -41,6 +52,9 @@ class Fruit:
         text = font.render(self.letter, True, (0, 0, 0))
         text_rect = text.get_rect(center=pos)
         window.blit(text, text_rect)
+
+# Add boundaries to the space
+add_boundaries()
 
 # Main game variables
 fruits = []
@@ -70,7 +84,7 @@ while run:
         fruits.append(Fruit(x, y, fruit_image))
 
     # Physics Step
-    SPACE.step(1/600)
+    SPACE.step(1/100)
 
     # Draw Everything
     WINDOW.fill((0, 0, 0))
