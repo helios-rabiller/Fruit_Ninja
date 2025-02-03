@@ -3,6 +3,8 @@ import pymunk
 import random
 import sys
 import os
+import json
+
 
 # Initialize Pygame and Pymunk
 pygame.init()
@@ -37,30 +39,37 @@ HALF_FRUIT_IMAGES = {
 for fruit, img in HALF_FRUIT_IMAGES.items():
     HALF_FRUIT_IMAGES[fruit] = pygame.transform.scale(img, (40, 80))  # Resize half-fruits
 def save_highscore(name, score):
-    with open("highscores.txt", "a") as f:
-        f.write(f"{name}: {score}\n")
+    try:
+        with open("highscores.json", "r") as f:
+            highscores = json.load(f)
+    except FileNotFoundError:
+        highscores = []
+
+    highscores.append({"name": name, "score": score})
+    highscores.sort(key=lambda x: x["score"], reverse=True)  # Trier par score décroissant
+
+    with open("highscores.json", "w") as f:
+        json.dump(highscores, f, indent=4)
 
 def clear_highscores():
-    with open("highscores.txt", "w") as f:
-        f.write("")
-
+    with open("highscores.json", "w") as f:
+        json.dump([], f)
 def show_highscores():
     WINDOW.blit(background, (0, 0))
     draw_text(WINDOW, "High Scores", 90, WIDTH / 2, 50)
 
     try:
-        with open("highscores.txt", "r") as f:
-            scores = f.readlines()
+        with open("highscores.json", "r") as f:
+            highscores = json.load(f)
     except FileNotFoundError:
-        scores = []
+        highscores = []
 
     y_offset = 150
-    for score in scores[-5:]:  # Afficher les 5 derniers scores
-        draw_text(WINDOW, score.strip(), 40, WIDTH / 2, y_offset)
+    for entry in highscores[:5]:  # Afficher les 5 meilleurs scores
+        draw_text(WINDOW, f"{entry['name']}: {entry['score']}", 40, WIDTH / 2, y_offset)
         y_offset += 40
 
-    # menu button to go back to main menu
-    
+    # Bouton pour retourner au menu principal
     menu_button = create_small_button("Menu", WIDTH // 2 - 50, HEIGHT - 100)
     pygame.display.flip()
     waiting = True
@@ -73,7 +82,7 @@ def show_highscores():
             if event.type == pygame.MOUSEBUTTONUP:
                 mouse_pos = pygame.mouse.get_pos()
 
-                # if menu pressed
+                # Si le bouton "Menu" est pressé
                 if menu_button.collidepoint(mouse_pos):
                     waiting = False
                     show_menu_screen()
